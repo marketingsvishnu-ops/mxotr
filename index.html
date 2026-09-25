@@ -1,1420 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Cricket Daily</title>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --blue: #063b8c;
-      --light-blue: #eaf3ff;
-      --orange: #ff6b00;
-      --dark: #111827;
-      --gray: #64748b;
-      --white: #ffffff;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f5f7fa;
-      color: var(--dark);
-    }
-
-    /* =========================
-       TOP HEADER
-    ========================= */
-
-    .top-header {
-      background: var(--blue);
-      color: white;
-      padding: 8px 6%;
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-    }
-
-    /* =========================
-       MAIN HEADER
-    ========================= */
-
-    header {
-      background: white;
-      padding: 22px 6%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .logo {
-      font-size: 34px;
-      font-weight: 900;
-      color: var(--blue);
-    }
-
-    .logo span {
-      color: var(--orange);
-    }
-
-    nav {
-      display: flex;
-      gap: 25px;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #334155;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      color: var(--orange);
-    }
-
-    .subscribe-btn {
-      background: var(--orange);
-      color: white;
-      padding: 11px 18px;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    /* =========================
-       CATEGORY BAR
-    ========================= */
-
-    .categories {
-      background: white;
-      border-bottom: 1px solid #e5e7eb;
-      padding: 13px 6%;
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-    }
-
-    .categories a {
-      white-space: nowrap;
-      text-decoration: none;
-      color: #475569;
-      padding: 7px 14px;
-      border-radius: 20px;
-      font-size: 13px;
-      border: 1px solid #e2e8f0;
-    }
-
-    .categories a.active,
-    .categories a:hover {
-      background: var(--blue);
-      color: white;
-      border-color: var(--blue);
-    }
-
-    /* =========================
-       SCORE TICKER
-    ========================= */
-
-    .score-ticker {
-      background: var(--dark);
-      color: white;
-      padding: 12px 6%;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      overflow: hidden;
-    }
-
-    .score-title {
-      background: var(--orange);
-      padding: 7px 12px;
-      font-size: 12px;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    .score-items {
-      display: flex;
-      gap: 35px;
-      white-space: nowrap;
-    }
-
-    .score-item {
-      font-size: 13px;
-    }
-
-    .score-item strong {
-      color: #60a5fa;
-    }
-
-    /* =========================
-       CONTAINER
-    ========================= */
-
-    .container {
-      width: 88%;
-      max-width: 1300px;
-      margin: 35px auto;
-    }
-
-    /* =========================
-       HERO
-    ========================= */
-
-    .hero {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 25px;
-    }
-
-    .hero-main {
-      min-height: 470px;
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-
-      background:
-        linear-gradient(
-          0deg,
-          rgba(0,0,0,.85),
-          rgba(0,0,0,0.05)
-        ),
-        url("https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1400&q=85")
-        center/cover;
-
-      display: flex;
-      align-items: flex-end;
-    }
-
-    .hero-text {
-      padding: 35px;
-      color: white;
-    }
-
-    .breaking-label {
-      display: inline-block;
-      background: var(--orange);
-      padding: 7px 12px;
-      font-size: 11px;
-      font-weight: bold;
-      margin-bottom: 14px;
-      border-radius: 3px;
-    }
-
-    .hero-text h1 {
-      font-size: 46px;
-      line-height: 1.1;
-      margin-bottom: 12px;
-    }
-
-    .hero-text p {
-      color: #e2e8f0;
-      line-height: 1.6;
-      max-width: 700px;
-    }
-
-    /* =========================
-       SIDE NEWS
-    ========================= */
-
-    .hero-side {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .side-card {
-      background: white;
-      border-radius: 9px;
-      overflow: hidden;
-      border: 1px solid #e2e8f0;
-    }
-
-    .side-card img {
-      width: 100%;
-      height: 145px;
-      object-fit: cover;
-    }
-
-    .side-content {
-      padding: 16px;
-    }
-
-    .side-content h3 {
-      font-size: 18px;
-      line-height: 1.3;
-      margin-top: 8px;
-    }
-
-    .tag {
-      color: var(--orange);
-      font-size: 11px;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-
-    /* =========================
-       SECTION TITLE
-    ========================= */
-
-    .section-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin: 45px 0 20px;
-    }
-
-    .section-title h2 {
-      font-size: 28px;
-      color: var(--blue);
-    }
-
-    .section-title h2::after {
-      content: "";
-      display: block;
-      width: 50px;
-      height: 4px;
-      background: var(--orange);
-      margin-top: 7px;
-    }
-
-    .section-title a {
-      text-decoration: none;
-      color: var(--blue);
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    /* =========================
-       NEWS + SIDEBAR
-    ========================= */
-
-    .content-layout {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 30px;
-    }
-
-    .news-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .news-card {
-      background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      overflow: hidden;
-      transition: .25s;
-    }
-
-    .news-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 25px rgba(15,23,42,.08);
-    }
-
-    .news-card img {
-      width: 100%;
-      height: 210px;
-      object-fit: cover;
-    }
-
-    .news-body {
-      padding: 18px;
-    }
-
-    .news-body h3 {
-      font-size: 20px;
-      line-height: 1.35;
-      margin: 9px 0;
-    }
-
-    .news-body p {
-      color: var(--gray);
-      line-height: 1.6;
-      font-size: 14px;
-    }
-
-    .news-meta {
-      color: #94a3b8;
-      font-size: 12px;
-      margin-top: 15px;
-    }
-
-    /* =========================
-       MOST READ
-    ========================= */
-
-    .most-read {
-      background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 22px;
-    }
-
-    .most-read h2 {
-      color: var(--blue);
-      padding-bottom: 15px;
-      border-bottom: 3px solid var(--orange);
-    }
-
-    .read-item {
-      display: grid;
-      grid-template-columns: 45px 1fr;
-      gap: 15px;
-      padding: 17px 0;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .read-number {
-      font-size: 30px;
-      font-weight: 900;
-      color: #cbd5e1;
-    }
-
-    .read-item h3 {
-      font-size: 15px;
-      line-height: 1.4;
-    }
-
-    .read-item p {
-      color: #94a3b8;
-      font-size: 11px;
-      margin-top: 5px;
-    }
-
-    /* =========================
-       MATCH CENTER
-    ========================= */
-
-    .match-section {
-      background: var(--blue);
-      color: white;
-      margin-top: 55px;
-      padding: 40px 6%;
-    }
-
-    .match-container {
-      max-width: 1300px;
-      margin: auto;
-    }
-
-    .match-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-    }
-
-    .match-title h2 {
-      font-size: 28px;
-    }
-
-    .match-title a {
-      color: white;
-      text-decoration: none;
-      font-size: 13px;
-    }
-
-    .match-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .match-card {
-      background: white;
-      color: var(--dark);
-      padding: 20px;
-      border-radius: 8px;
-    }
-
-    .match-status {
-      color: #16a34a;
-      font-size: 11px;
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
-
-    .match-team {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .match-team strong {
-      color: var(--blue);
-    }
-
-    .match-result {
-      font-size: 12px;
-      color: #64748b;
-      margin-top: 12px;
-    }
-
-    /* =========================
-       FEATURED PLAYER
-    ========================= */
-
-    .player {
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border: 1px solid #e2e8f0;
-    }
-
-    .player img {
-      width: 100%;
-      height: 370px;
-      object-fit: cover;
-    }
-
-    .player-info {
-      padding: 45px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .player-info h2 {
-      color: var(--blue);
-      font-size: 38px;
-      margin: 10px 0;
-    }
-
-    .player-info p {
-      color: var(--gray);
-      line-height: 1.7;
-    }
-
-    .player-stats {
-      display: flex;
-      gap: 10px;
-      margin-top: 25px;
-    }
-
-    .stat {
-      background: var(--light-blue);
-      padding: 15px 20px;
-      text-align: center;
-      border-radius: 6px;
-    }
-
-    .stat strong {
-      display: block;
-      color: var(--blue);
-      font-size: 22px;
-    }
-
-    .stat span {
-      color: var(--gray);
-      font-size: 11px;
-    }
-
-    /* =========================
-       NEWSLETTER
-    ========================= */
-
-    .newsletter {
-      margin: 60px 0;
-      background: linear-gradient(
-        135deg,
-        var(--blue),
-        #0757c7
-      );
-      color: white;
-      padding: 45px;
-      border-radius: 10px;
-      text-align: center;
-    }
-
-    .newsletter h2 {
-      font-size: 30px;
-      margin-bottom: 10px;
-    }
-
-    .newsletter p {
-      color: #dbeafe;
-      margin-bottom: 22px;
-    }
-
-    .newsletter input {
-      width: 300px;
-      max-width: 60%;
-      padding: 14px;
-      border: none;
-      outline: none;
-      border-radius: 5px 0 0 5px;
-    }
-
-    .newsletter button {
-      padding: 14px 20px;
-      border: none;
-      background: var(--orange);
-      color: white;
-      font-weight: bold;
-      border-radius: 0 5px 5px 0;
-      cursor: pointer;
-    }
-
-    /* =========================
-       FOOTER
-    ========================= */
-
-    footer {
-      background: #0f172a;
-      color: white;
-      padding: 45px 6%;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 30px;
-      max-width: 1300px;
-      margin: auto;
-    }
-
-    footer h3 {
-      margin-bottom: 15px;
-    }
-
-    footer p,
-    footer a {
-      color: #94a3b8;
-      text-decoration: none;
-      line-height: 2;
-      font-size: 14px;
-    }
-
-    .copyright {
-      max-width: 1300px;
-      margin: 35px auto 0;
-      padding-top: 20px;
-      border-top: 1px solid #1e293b;
-      text-align: center;
-      color: #64748b;
-      font-size: 13px;
-    }
-
-    /* =========================
-       MOBILE
-    ========================= */
-
-    @media(max-width: 900px) {
-
-      nav {
-        display: none;
-      }
-
-      .hero {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-main {
-        min-height: 430px;
-      }
-
-      .content-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .match-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .player {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media(max-width: 600px) {
-
-      .top-header {
-        display: none;
-      }
-
-      header {
-        padding: 18px;
-      }
-
-      .subscribe-btn {
-        display: none;
-      }
-
-      .container {
-        width: 94%;
-      }
-
-      .hero-main {
-        min-height: 390px;
-      }
-
-      .hero-text {
-        padding: 22px;
-      }
-
-      .hero-text h1 {
-        font-size: 32px;
-      }
-
-      .hero-side {
-        display: grid;
-        grid-template-columns: 1fr;
-      }
-
-      .news-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .player-info {
-        padding: 25px;
-      }
-
-      .player-info h2 {
-        font-size: 30px;
-      }
-
-      .player-stats {
-        flex-wrap: wrap;
-      }
-
-      .newsletter {
-        padding: 30px 15px;
-      }
-
-      .newsletter input {
-        width: 60%;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gaming Demo</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#140606;
+    color:#fff;
+}
+
+.container{
+    display:flex;
+    min-height:100vh;
+}
+
+.demo{
+    width:70%;
+    background:#111;
+}
+
+iframe{
+    width:100%;
+    height:100vh;
+    border:none;
+}
+
+.right{
+    width:30%;
+    padding:30px 22px;
+    background:linear-gradient(180deg,#2b0000,#0d0000);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.box{
+    width:100%;
+    background:#0b0b0b;
+    border:1px solid #ff2d2d;
+    border-radius:22px;
+    padding:26px 20px;
+    text-align:center;
+    box-shadow:0 0 30px rgba(255,0,0,.35);
+}
+
+.badge{
+    display:inline-block;
+    background:#ff2d2d;
+    color:#fff;
+    padding:10px 22px;
+    border-radius:30px;
+    font-weight:bold;
+    margin-bottom:18px;
+}
+
+h1{
+    color:#ff4040;
+    font-size:36px;
+    text-transform:uppercase;
+    margin-bottom:15px;
+}
+
+.sub{
+    color:#ddd;
+    line-height:1.6;
+    margin-bottom:24px;
+    font-size:17px;
+}
+
+.features{
+    display:grid;
+    gap:14px;
+    margin:24px 0;
+}
+
+.feature{
+    background:linear-gradient(90deg,#1b1b1b,#3b0000);
+    border:1px solid rgba(255,50,50,.6);
+    border-radius:14px;
+    padding:15px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.feature span{
+    color:#ff4d4d;
+}
+
+.website-row{
+    display:flex;
+    justify-content:space-between;
+    margin-top:18px;
+    font-weight:bold;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.website-row a{
+    text-decoration:none;
+}
+
+.website{
+    color:#25D366;
+}
+
+.whatsapp-small{
+    color:#ff4d4d;
+}
+
+.cta{
+    display:block;
+    margin-top:24px;
+    background:#25D366;
+    color:#fff;
+    text-decoration:none;
+    padding:18px;
+    border-radius:15px;
+    font-size:22px;
+    font-weight:bold;
+    transition:.3s;
+    box-shadow:0 0 18px rgba(37,211,102,.4);
+}
+
+.cta:hover{
+    background:#1ebe5d;
+    transform:scale(1.03);
+}
+
+.trust{
+    margin-top:18px;
+    color:#ccc;
+    line-height:1.7;
+}
+
+.footer{
+    margin-top:20px;
+    color:#888;
+    font-size:12px;
+}
+
+/* MOBILE */
+@media (max-width:768px){
+
+.container{
+    flex-direction:column-reverse; /* Contact first, Demo below */
+}
+
+.demo,
+.right{
+    width:100%;
+}
+
+iframe{
+    height:500px;
+}
+
+.right{
+    padding:20px;
+}
+
+h1{
+    font-size:28px;
+}
+
+.sub{
+    font-size:16px;
+}
+
+.feature{
+    font-size:16px;
+}
+
+.cta{
+    font-size:20px;
+    padding:16px;
+}
+
+.website-row{
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+}
+
+}
+</style>
+
 </head>
 
 <body>
 
-  <!-- TOP BAR -->
+<div class="container">
 
-  <div class="top-header">
-    <span>CRICKET DAILY</span>
-    <span>MONDAY • LATEST CRICKET UPDATES</span>
-  </div>
-
-
-  <!-- HEADER -->
-
-  <header>
-
-    <div class="logo">
-      CRICKET<span>DAILY</span>
+    <!-- Demo Section -->
+    <div class="demo">
+        <iframe src="https://www.iceexchange.in/"></iframe>
     </div>
 
-    <nav>
-      <a href="#">Home</a>
-      <a href="#news">News</a>
-      <a href="#matches">Matches</a>
-      <a href="#players">Players</a>
-      <a href="#">Rankings</a>
-      <a href="#">Videos</a>
-    </nav>
+    <!-- Contact Section -->
+    <div class="right">
 
-    <a href="#newsletter" class="subscribe-btn">
-      Subscribe
-    </a>
+        <div class="box">
 
-  </header>
-
-
-  <!-- CATEGORY BAR -->
-
-  <div class="categories">
-
-    <a href="#" class="active">All</a>
-    <a href="#">International</a>
-    <a href="#">IPL</a>
-    <a href="#">T20</a>
-    <a href="#">ODI</a>
-    <a href="#">Test</a>
-    <a href="#">Women</a>
-    <a href="#">Players</a>
-    <a href="#">Analysis</a>
-
-  </div>
-
-
-  <!-- SCORE TICKER -->
-
-  <div class="score-ticker">
-
-    <div class="score-title">
-      LIVE SCORES
-    </div>
-
-    <div class="score-items">
-
-      <div class="score-item">
-        IND <strong>245/6</strong> vs AUS 198/7
-      </div>
-
-      <div class="score-item">
-        ENG <strong>187/4</strong> vs SA 182/8
-      </div>
-
-      <div class="score-item">
-        PAK <strong>142/3</strong> vs NZ
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <main class="container">
-
-    <!-- HERO -->
-
-    <section class="hero">
-
-      <article class="hero-main">
-
-        <div class="hero-text">
-
-          <span class="breaking-label">
-            TOP STORY
-          </span>
-
-          <h1>
-            The latest cricket stories everyone is talking about
-          </h1>
-
-          <p>
-            Follow the biggest matches, latest player updates,
-            tournament news and stories from the world of cricket.
-          </p>
-
-        </div>
-
-      </article>
-
-
-      <div class="hero-side">
-
-        <article class="side-card">
-
-          <img
-            src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=85"
-            alt="Cricket player"
-          >
-
-          <div class="side-content">
-
-            <span class="tag">
-              PLAYERS
-            </span>
-
-            <h3>
-              Star players prepare for the next big contest
-            </h3>
-
-          </div>
-
-        </article>
-
-
-        <article class="side-card">
-
-          <img
-            src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=85"
-            alt="Cricket stadium"
-          >
-
-          <div class="side-content">
-
-            <span class="tag">
-              TOURNAMENTS
-            </span>
-
-            <h3>
-              Big tournament brings cricket fans together
-            </h3>
-
-          </div>
-
-        </article>
-
-      </div>
-
-    </section>
-
-
-    <!-- NEWS -->
-
-    <div class="section-title" id="news">
-
-      <h2>Latest News</h2>
-
-      <a href="#">
-        View All →
-      </a>
-
-    </div>
-
-
-    <section class="content-layout">
-
-      <div class="news-grid">
-
-        <article class="news-card">
-
-          <img
-            src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=900&q=85"
-            alt="Cricket match"
-          >
-
-          <div class="news-body">
-
-            <span class="tag">
-              INTERNATIONAL
-            </span>
-
-            <h3>
-              Teams prepare for another exciting cricket battle
-            </h3>
-
-            <p>
-              Players are completing their preparations ahead
-              of another important contest.
-            </p>
-
-            <div class="news-meta">
-              2 hours ago • 5 min read
+            <div class="badge">
+                VIP Manual ID Available
             </div>
 
-          </div>
+            <h1>GET YOUR ID NOW</h1>
 
-        </article>
-
-
-        <article class="news-card">
-
-          <img
-            src="https://images.unsplash.com/photo-1593766827228-8737b1677d9b?auto=format&fit=crop&w=900&q=85"
-            alt="Cricket batsman"
-          >
-
-          <div class="news-body">
-
-            <span class="tag">
-              ANALYSIS
-            </span>
-
-            <h3>
-              Five things to watch in the next match
-            </h3>
-
-            <p>
-              Key battles and players could make the difference.
+            <p class="sub">
+                Fast manual ID service with easy deposit support.
+                New users can start quickly through WhatsApp.
             </p>
 
-            <div class="news-meta">
-              4 hours ago • 4 min read
+            <div class="features">
+
+                <div class="feature">
+                    Minimum Deposit:
+                    <span>₹100 Only</span>
+                </div>
+
+                <div class="feature">
+                    Welcome Bonus:
+                    <span>10%</span>
+                </div>
+
+                <div class="feature">
+                    Manual ID Support:
+                    <span>WhatsApp Only</span>
+                </div>
+
+                <div class="feature">
+                    Quick Help:
+                    <span>Deposit &amp; Withdrawal Support</span>
+                </div>
+
             </div>
 
-          </div>
+            <div class="website-row">
 
-        </article>
+                <a class="website" href="https://www.iceexchange.in" target="_blank">
+                    🌐 www.iceexchange.in
+                </a>
 
+                <a class="whatsapp-small"
+                   href="https://wa.me/+447599256816
+                   target="_blank">
+                    💬 WhatsApp
+                </a>
 
-        <article class="news-card">
-
-          <img
-            src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=900&q=85"
-            alt="Cricket player"
-          >
-
-          <div class="news-body">
-
-            <span class="tag">
-              PLAYERS
-            </span>
-
-            <h3>
-              Rising stars looking to make their mark
-            </h3>
-
-            <p>
-              Young cricket talent continues to attract attention.
-            </p>
-
-            <div class="news-meta">
-              6 hours ago • 3 min read
             </div>
 
-          </div>
+            <a class="cta"
+               href="https://wa.me/+447599256816?text=Hello%20I%20want%20new%20manual%20ID"
+               target="_blank">
+                📲 WhatsApp Now
+            </a>
 
-        </article>
-
-
-        <article class="news-card">
-
-          <img
-            src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=900&q=85"
-            alt="Cricket ground"
-          >
-
-          <div class="news-body">
-
-            <span class="tag">
-              TOURNAMENT
-            </span>
-
-            <h3>
-              New cricket schedule promises a busy season
-            </h3>
-
-            <p>
-              Fans can look forward to a packed cricket calendar.
-            </p>
-
-            <div class="news-meta">
-              Yesterday • 6 min read
+            <div class="trust">
+                ✅ Trusted Manual Support<br>
+                ✅ Simple Process<br>
+                ✅ Fast Response
             </div>
 
-          </div>
-
-        </article>
-
-      </div>
-
-
-      <!-- MOST READ -->
-
-      <aside class="most-read">
-
-        <h2>
-          Most Read
-        </h2>
-
-
-        <div class="read-item">
-
-          <div class="read-number">
-            01
-          </div>
-
-          <div>
-            <h3>
-              Latest updates from the cricket world
-            </h3>
-
-            <p>
-              18.2K reads
-            </p>
-          </div>
+            <div class="footer">
+                18+ Only | Play Responsibly | Follow Your Local Laws | T&amp;C Apply
+            </div>
 
         </div>
-
-
-        <div class="read-item">
-
-          <div class="read-number">
-            02
-          </div>
-
-          <div>
-            <h3>
-              Players to watch in the upcoming matches
-            </h3>
-
-            <p>
-              14.8K reads
-            </p>
-          </div>
-
-        </div>
-
-
-        <div class="read-item">
-
-          <div class="read-number">
-            03
-          </div>
-
-          <div>
-            <h3>
-              Everything you need to know about the tournament
-            </h3>
-
-            <p>
-              12.5K reads
-            </p>
-          </div>
-
-        </div>
-
-
-        <div class="read-item">
-
-          <div class="read-number">
-            04
-          </div>
-
-          <div>
-            <h3>
-              Biggest cricket stories of the week
-            </h3>
-
-            <p>
-              10.9K reads
-            </p>
-          </div>
-
-        </div>
-
-
-        <div class="read-item">
-
-          <div class="read-number">
-            05
-          </div>
-
-          <div>
-            <h3>
-              Match preview and team updates
-            </h3>
-
-            <p>
-              9.4K reads
-            </p>
-          </div>
-
-        </div>
-
-      </aside>
-
-    </section>
-
-  </main>
-
-
-  <!-- MATCH CENTER -->
-
-  <section class="match-section" id="matches">
-
-    <div class="match-container">
-
-      <div class="match-title">
-
-        <h2>
-          Match Center
-        </h2>
-
-        <a href="#">
-          Full Schedule →
-        </a>
-
-      </div>
-
-
-      <div class="match-grid">
-
-        <div class="match-card">
-
-          <div class="match-status">
-            ● LIVE
-          </div>
-
-          <div class="match-team">
-            <span>India</span>
-            <strong>245/6</strong>
-          </div>
-
-          <div class="match-team">
-            <span>Australia</span>
-            <strong>198/7</strong>
-          </div>
-
-          <div class="match-result">
-            India lead by 47 runs
-          </div>
-
-        </div>
-
-
-        <div class="match-card">
-
-          <div class="match-status">
-            ● LIVE
-          </div>
-
-          <div class="match-team">
-            <span>England</span>
-            <strong>187/4</strong>
-          </div>
-
-          <div class="match-team">
-            <span>South Africa</span>
-            <strong>182/8</strong>
-          </div>
-
-          <div class="match-result">
-            England need 1 run
-          </div>
-
-        </div>
-
-
-        <div class="match-card">
-
-          <div class="match-status">
-            UPCOMING
-          </div>
-
-          <div class="match-team">
-            <span>Pakistan</span>
-            <strong>—</strong>
-          </div>
-
-          <div class="match-team">
-            <span>New Zealand</span>
-            <strong>—</strong>
-          </div>
-
-          <div class="match-result">
-            Starts at 7:30 PM
-          </div>
-
-        </div>
-
-      </div>
 
     </div>
 
-  </section>
-
-
-  <main class="container">
-
-    <!-- PLAYER -->
-
-    <div class="section-title" id="players">
-
-      <h2>
-        Player Spotlight
-      </h2>
-
-    </div>
-
-
-    <section class="player">
-
-      <img
-        src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1000&q=85"
-        alt="Featured cricket player"
-      >
-
-      <div class="player-info">
-
-        <span class="tag">
-          PLAYER SPOTLIGHT
-        </span>
-
-        <h2>
-          Stars of Modern Cricket
-        </h2>
-
-        <p>
-          Discover the players making an impact across
-          international cricket and major competitions.
-          Follow their performances, milestones and latest stories.
-        </p>
-
-
-        <div class="player-stats">
-
-          <div class="stat">
-            <strong>100+</strong>
-            <span>MATCHES</span>
-          </div>
-
-          <div class="stat">
-            <strong>5K+</strong>
-            <span>RUNS</span>
-          </div>
-
-          <div class="stat">
-            <strong>150+</strong>
-            <span>WICKETS</span>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- NEWSLETTER -->
-
-    <section class="newsletter" id="newsletter">
-
-      <h2>
-        Get Cricket Daily
-      </h2>
-
-      <p>
-        Subscribe for cricket news, match updates and analysis.
-      </p>
-
-      <form onsubmit="subscribe(event)">
-
-        <input
-          id="email"
-          type="email"
-          placeholder="Enter your email"
-          required
-        >
-
-        <button type="submit">
-          SUBSCRIBE
-        </button>
-
-      </form>
-
-    </section>
-
-  </main>
-
-
-  <!-- FOOTER -->
-
-  <footer>
-
-    <div class="footer-grid">
-
-      <div>
-
-        <h3>
-          CRICKET<span style="color:#ff6b00;">DAILY</span>
-        </h3>
-
-        <p>
-          Your daily destination for cricket news,
-          scores and stories.
-        </p>
-
-      </div>
-
-
-      <div>
-
-        <h3>
-          News
-        </h3>
-
-        <p>
-          <a href="#">Latest News</a>
-        </p>
-
-        <p>
-          <a href="#">Match Reports</a>
-        </p>
-
-        <p>
-          <a href="#">Analysis</a>
-        </p>
-
-      </div>
-
-
-      <div>
-
-        <h3>
-          Cricket
-        </h3>
-
-        <p>
-          <a href="#">International</a>
-        </p>
-
-        <p>
-          <a href="#">T20</a>
-        </p>
-
-        <p>
-          <a href="#">Test</a>
-        </p>
-
-      </div>
-
-
-      <div>
-
-        <h3>
-          Follow
-        </h3>
-
-        <p>
-          <a href="#">YouTube</a>
-        </p>
-
-        <p>
-          <a href="#">Instagram</a>
-        </p>
-
-        <p>
-          <a href="#">Facebook</a>
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <div class="copyright">
-      © 2026 Cricket Daily. All rights reserved.
-    </div>
-
-  </footer>
-
-
-  <script>
-
-    function subscribe(event) {
-
-      event.preventDefault();
-
-      const email =
-        document.getElementById("email").value;
-
-      alert(
-        "Subscription successful for " + email
-      );
-
-      document.getElementById("email").value = "";
-
-    }
-
-  </script>
+</div>
 
 </body>
 </html>
